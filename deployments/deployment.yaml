@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-products
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: products
+  template:
+    metadata:
+      labels:
+        app: products
+    spec:
+      containers:
+        - name: products
+          image: douglasjunio/aplicacaopos:tagname
+          ports:
+            - containerPort: 8080  # Porta em que sua aplicação está ouvindo dentro do contêiner
+          env:
+            - name: DB_URL
+              value: "jdbc:postgresql://postgres-service:5432/products"  # URL de conexão com o banco de dados
+            - name: DB_USERNAME
+              value: "postgres"  # Nome de usuário do PostgreSQL
+            - name: DB_PASSWORD
+              value: "1234"  # Senha do PostgreSQL

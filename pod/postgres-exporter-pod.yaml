@@ -1,0 +1,16 @@
+# Pod para o PostgreSQL Exporter
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgres-exporter-pod
+  labels:
+    app: postgres-exporter
+spec:
+  containers:
+    - name: postgres-exporter
+      image: quay.io/prometheuscommunity/postgres-exporter:v0.13.1
+      ports:
+        - containerPort: 9187
+      env:
+        - name: DATA_SOURCE_NAME
+          value: "postgresql://postgres:1234@postgres-service:5432/products?sslmode=disable"

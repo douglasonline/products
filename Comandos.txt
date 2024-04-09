@@ -1,0 +1,87 @@
+docker build -t products .
+
+docker image tag products douglasjunio/aplicacaopos:tagname
+
+docker image push douglasjunio/aplicacaopos:tagname
+
+kubectl apply -f deployment.yaml
+
+kubectl apply -f deployment-readiness.yaml
+
+kubectl apply -f servico.yaml
+
+kubectl apply -f postgres-pod.yaml
+
+kubectl apply -f prometheus.yaml
+
+kubectl delete pod postgres-pod
+
+kubectl apply -f postgres-service.yaml
+
+kubectl apply -f pod-readiness.yaml
+
+kubectl apply -f postgres-exporter.yaml
+
+kubectl apply -f postgres-exporter-pod.yaml
+
+kubectl describe deployment products 
+
+docker images products
+
+docker rmi -f 4f9bd11ff97b
+
+kubectl delete pod products-pod-readiness --force
+
+kubectl apply -f postgres-pod.yaml
+
+kubectl scale deployment deployment-products --replicas=0
+
+kubectl scale deployment deployment-products-readiness --replicas=0
+
+kubectl logs deployment-products-readiness-78dfdf84b5-qvlx8
+
+docker run -p 8080:8080 products
+
+docker run -p 8080:8080 --network aplicacao products
+
+docker network create aplicacao
+
+docker run --rm --name postgres-service -e POSTGRES_PASSWORD=1234 -d -p 5432:5432 --network aplicacao postgres
+
+kubectl get pods
+
+kubectl get services
+
+/actuator/health
+
+kubectl port-forward deployment-products-readiness-6bbdd8f6db-dlclj 8080:8080
+
+Após mudar a imagem tem que subir no Docker Hub para funcionar no Deployment
+
+kubectl get deployments -n monitoring
+
+kubectl delete deployment prometheus -n monitoring
+
+kubectl logs postgres-pod -c postgres-exporter
+
+kubectl exec postgres-pod -c postgres-exporter -- printenv | findstr APP_LABEL
+
+kubectl delete service products-service
+
+kubectl get pods -n monitoring
+
+kubectl exec -it postgres-exporter-pod-prometheus -n monitoring -- wget -O - http://localhost:9187/metrics
+
+kubectl get pods -n monitoring
+
+kubectl describe pod products-pod-readiness-prometheus -n monitoring
+
+kubectl get pods -n monitoring
+
+kubectl delete pod postgres-exporter-pod-prometheus -n monitoring
+
+kubectl logs postgres-exporter-pod-prometheus -n monitoring
+
+kubectl delete deployment prometheus -n monitoring
+
+kubectl logs jmeter-5f45d6bd6d-2nqkx -n monitoring

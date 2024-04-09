@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: products-pod-readiness
+  labels:
+    app: products
+spec:
+  containers:
+    - name: products
+      image: douglasjunio/aplicacaopos:tagname
+      ports:
+        - containerPort: 8080
+      env:
+        - name: DB_URL
+          value: "jdbc:postgresql://postgres-service:5432/products"
+        - name: DB_USERNAME
+          value: "postgres"
+        - name: DB_PASSWORD
+          value: "1234"
+      readinessProbe:
+        httpGet:
+          path: /custom-health
+          port: 8080
+        initialDelaySeconds: 5
+        periodSeconds: 10
